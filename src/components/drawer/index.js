@@ -22,7 +22,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Details } from "@mui/icons-material";
 
 // Functional component ViewRestaurant takes a placeId as a prop
-export default function ViewRestaurant({ placeId }) {
+export default function ViewRestaurant({ placeId, name }) {
   // State to manage the opening and closing of the drawer
   const [state, setState] = React.useState({
     top: false,
@@ -131,7 +131,7 @@ export default function ViewRestaurant({ placeId }) {
     >
       <Box sx={{ position: "absolute", right: "10px", top: "10px" }}>
         <Button onClick={toggleDrawer(anchor, false)}>
-          <img src="/Images/close-btn.jpg" width="40px" />
+          <img src="/Images/close-btn.jpg" width="40px" alt="close Icon"/>
         </Button>
       </Box>
       {details && (
@@ -418,8 +418,8 @@ export default function ViewRestaurant({ placeId }) {
       {["right"].map((anchor) => (
         <React.Fragment key={anchor}>
           {/* Button to open the drawer */}
-          <Button onClick={toggleDrawer(anchor, true, placeId)}>
-            View Restaurant
+          <Button onClick={toggleDrawer(anchor, true, placeId)} sx={{textWrap:"nowrap"}}>
+           {name}
           </Button>
           {/* Drawer component */}
           <Drawer

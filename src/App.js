@@ -53,8 +53,10 @@ function App() {
                   >
                     {/* <RestaurantSearchInput /> */}
                   </div>
+                  <div style={{background:"url(/Images/backgroundFood.jpg)"}}>
                   <Map/>
                   <Sidebar />
+                  </div>
                 </ProtectedRoute>
               }
             />

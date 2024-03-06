@@ -19,7 +19,7 @@ import { Tooltip } from "@mui/material";
 import LocalFireDepartmentTwoToneIcon from "@mui/icons-material/LocalFireDepartmentTwoTone";
 import MessageModal from "../message-modal";
 import ViewRestaurant from "../drawer";
-import { SnackbarProvider, enqueueSnackbar } from "notistack";
+import { enqueueSnackbar } from "notistack";
 
 import { useUserAuth } from "../../context/UserAuthContext";
 // import { ToastContainer, toast } from 'react-toastify';
@@ -47,12 +47,16 @@ export default function RestaurantReviewCard(props) {
     photos,
     place_id: placeId,
     geometry,
+    supervotes,
+    name
     // currentLocation,
   } = props;
 
   const {user} = useUserAuth();
+  console.log("Resturant Box User", user);
   const [expanded, setExpanded] = React.useState(false);
   const [upvotes_, setUpvotes_] = React.useState(upvotes);
+  const [supervotes_, setSupervotes_] = React.useState(supervotes);
   const [downvotes_, setDownvotes_] = React.useState(downvotes);
   const [openMessageModal, setOpenMessageModal] = React.useState(false);
   const [isViewRestaurant, setIsViewRestaurant] = React.useState(false);
@@ -122,7 +126,7 @@ export default function RestaurantReviewCard(props) {
       return;
     }
 
-    fetch(`http://localhost:4000/upvote/${id}/${user.email}`, {
+    fetch(`https://joyous-cardigan-foal.cyclic.app/upvote/${id}/${user.email}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -150,7 +154,7 @@ export default function RestaurantReviewCard(props) {
 
       return;
     }
-    fetch(`http://localhost:4000/downvote/${id}/${user.email}`, {
+    fetch(`https://joyous-cardigan-foal.cyclic.app/downvote/${id}/${user.email}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -176,7 +180,9 @@ export default function RestaurantReviewCard(props) {
         maxWidth: 345,
         position: "relative",
         margin: "0 1rem",
-        boxShadow:"rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px"
+        boxShadow:"rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
+        background: (supervotes_.length > 0) ? "url('/Images/goldenBG.jpeg')" : '',
+        backgroundSize:'cover'
       }}
     >
       {/* <SnackbarProvider /> */}
@@ -194,8 +200,8 @@ export default function RestaurantReviewCard(props) {
         title="Shrimp and Chorizo Paella"
         subheader="September 14, 2016"
       /> */}
-      <ViewRestaurant placeId={placeId} />
-      <MessageModal open={openMessageModal} setOpen={setOpenMessageModal} />
+      <ViewRestaurant placeId={placeId} name={name}/>
+      <MessageModal open={openMessageModal} setOpen={setOpenMessageModal} userData={props} currentLocation={currentLocation} setSupervotes_={setSupervotes_} reference={reference}/>
       {photos ?
         (
           <CardMedia
@@ -228,6 +234,7 @@ export default function RestaurantReviewCard(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
+        <div style={{display:"flex", justifyContent:"space-between", flexDirection:"row",width:"100%"}}>
         <div
           style={{
             backgroundColor: "#f1f1f1",
@@ -270,7 +277,13 @@ export default function RestaurantReviewCard(props) {
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
-
+        <div
+          style={{
+            backgroundColor: "#f1f1f1",
+            borderRadius: "10px",
+            display: "flex",
+            alignItems: "center",
+          }}>
         <Tooltip title="Super Vote">
           <ExpandMore
             expand={expanded}
@@ -280,6 +293,9 @@ export default function RestaurantReviewCard(props) {
             <LocalFireDepartmentTwoToneIcon onClick={handleOpenMessageModal} />
           </ExpandMore>
         </Tooltip>
+        <span style={{ paddingRight: "10px" }}>{supervotes_?.length}</span>
+</div>
+        </div>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>

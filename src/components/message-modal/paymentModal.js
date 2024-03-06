@@ -6,23 +6,60 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { CardElement } from "@stripe/react-stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { useUserAuth } from "../../context/UserAuthContext";
+import { enqueueSnackbar } from "notistack";
 
 export default function PaymentModal(props) {
-  const { open, setOpen } = props;
+  const { open, setOpen, currentLocation,userData } = props;
+  const {user} = useUserAuth();
 
   const stripePromise = loadStripe(
       "pk_test_51O2KsPEjS12OGlkDbSBhfjyRl4JcwekIaAoQ8MSEPgho0CIyPLFg3d00P3ahBo6iH6DjEhbOxCawbRCvYsFL5ch600qU1oKbKW"
     );
-  //   const handleClickOpen = () => {
-  //     setOpen(true);
-  //   };
+    const handleClose = () => {
+      setOpen(false);
+    };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+    const handlePayment = () => {
+      fetch(`http://localhost:4000/supervote/${props.reference}/${user.email}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => {
+          if (!res.ok) {
+            return res.json().then((error) => {
+              throw new Error(error.message || "You have already supervoted.");
+            });
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          const supervotes = data.data?.supervotes; // Ensure data.data exists
+          if (supervotes !== undefined) {
+            props.setSupervotes_(supervotes);
+            enqueueSnackbar("Supervoted the restaurant", {
+              variant: "success",
+            });
+          } else {
+            throw new Error("Unexpected response format");
+          }
+        })
+        .catch((error) => {
+          enqueueSnackbar(error.message, {
+            variant: "error",
+          });
+          console.error("Error during supervote:", error);
+        })
+        .finally(() => {
+          setOpen(false);
+        });
+    };
 
   const options = {
     style: {
@@ -64,7 +101,7 @@ export default function PaymentModal(props) {
         </Box>
         <DialogActions>
           <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={handlePayment} autoFocus>
             Proceed
           </Button>
         </DialogActions>

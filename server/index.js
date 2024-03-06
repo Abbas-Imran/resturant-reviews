@@ -344,31 +344,51 @@ app.put("/downvote/:id/:email", async (req, res) => {
 app.put("/supervote/:id/:email", async (req, res) => {
   const id = req.params.id;
   const email = req.params.email;
+
   try {
-    const restaurant = await restaurantCollection.findOne({
-      _id: new ObjectId(id),
+    // Find the restaurant document
+    const restaurant = await restaurantCollection.findOne({ reference: id });
+
+    if (!restaurant) {
+      // If the restaurant with the given reference ID is not found, return an error response
+      return res.status(404).json({ error: "Restaurant not found." });
+    }
+
+    if (
+      restaurant?.supervotes?.includes(email)
+    ) {
+      return res.status(404).json({ error: "You have already voted." });
+    }
+
+    // Check if the email exists in the downvotes array
+    if (restaurant.supervotes.includes(email)) {
+      // Remove the email from the downvotes array
+      let result = await restaurantCollection.updateOne(
+        { reference: id },
+        { $pull: { supervotes: email } }
+      );
+
+      // Push the email into the upvotes array
+      result = await restaurantCollection.updateOne(
+        { reference: id },
+        { $push: { supervotes: email } }
+      );
+    } else {
+      // If the email is not in the downvotes array, return an error response
+      // Push the email into the upvotes array
+      let result = await restaurantCollection.updateOne(
+        { reference: id },
+        { $push: { supervotes: email } }
+      );
+    }
+
+    const newRes = await restaurantCollection.findOne({
+      reference: id,
     });
 
-    console.log(restaurant);
-
-    const result = await restaurantCollection.updateOne(
-      {
-        _id: new ObjectId(id),
-      },
-      {
-        $set: {
-          votes: [
-            ...restaurant.votes,
-            {
-              email,
-              votetype: "supervote",
-            },
-          ],
-        },
-      }
-    );
-    res.json(result);
+    res.json({ success: true, message: "supervotes", data: newRes });
   } catch (err) {
+    console.log(err);
     res.status(500).send(err);
   }
 });
@@ -378,7 +398,7 @@ app.listen(PORT, () => {
   client.connect((err) => {
     console.log("Mongodb is connected");
 
-    console.log(err);
+    console.log(err); 
     if (err) {
       return;
     }

@@ -86,7 +86,7 @@ const RestaurantResultBox = (props) => {
   );
 
   const fetchReviews = () => {
-    fetch("http://localhost:4000/reviews/all")
+    fetch("https://joyous-cardigan-foal.cyclic.app/reviews/all")
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -98,7 +98,7 @@ const RestaurantResultBox = (props) => {
   }, []);
 
   const onDeleteReviewHandler = (id) => {
-    fetch(`http://localhost:4000/reviews/${id}`, {
+    fetch(`https://joyous-cardigan-foal.cyclic.app/reviews/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -121,7 +121,7 @@ const RestaurantResultBox = (props) => {
   };
 
   const onUpVoteHandler = (id) => {
-    fetch(`http://localhost:4000/upvote/:id`, {
+    fetch(`https://joyous-cardigan-foal.cyclic.app/upvote/:id`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -137,7 +137,7 @@ const RestaurantResultBox = (props) => {
 
   const onSubmitReview = (event) => {
     event.preventDefault();
-    fetch(`http://localhost:4000/review`, {
+    fetch(`https://joyous-cardigan-foal.cyclic.app/review`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

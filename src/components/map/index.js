@@ -219,6 +219,7 @@ const Map = (props) => {
   const [selected, setSelected] = React.useState(null);
 
   const [currentPosition, setCurrentPosition] = useState(null);
+  console.log("currentPosition",currentPosition);
 
   const onMapClick = React.useCallback((e) => {
     setSuperVotes((current) => [
@@ -393,7 +394,7 @@ function Search({ panTo, fetchRestaurant }) {
         <ComboboxInput
           value={value}
           onChange={handleInput}
-          disabled={!ready}
+          disabled={!ready} className="combomSearch"
           placeholder="Search your restaurant"
           style={{
             minWidth: "500px",
@@ -402,10 +403,10 @@ function Search({ panTo, fetchRestaurant }) {
             borderRadius: ".2rem",
           }}
         />
-        <ComboboxPopover>
-          <ComboboxList>
+        <ComboboxPopover style={{background:"white"}}>
+          <ComboboxList style={{display: "flex", flexDirection:"column", width:"500px",border:"1px solid black",padding:"8px"}}>
             {data?.map(({ id, description }) => (
-              <ComboboxOption key={id} value={description} />
+              <ComboboxOption key={id} value={description} style={{cursor:"pointer"}}/>
             ))}
           </ComboboxList>
         </ComboboxPopover>

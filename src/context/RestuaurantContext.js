@@ -7,7 +7,7 @@ export function RestaurantContextProvider({ children }) {
 
   const [restaurants, setRestaurants] = useState([]);
   const fetchRestaurant = (lat, lng) => {
-    fetch(`http://localhost:4000/restaurant/all/${lat}/${lng}`)
+    fetch(`https://joyous-cardigan-foal.cyclic.app/restaurant/all/${lat}/${lng}`)
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);

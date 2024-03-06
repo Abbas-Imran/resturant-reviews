@@ -44,7 +44,7 @@ export default function MessageModal(props) {
           </Button>
         </DialogActions>
       </Dialog>
-      <PaymentModal open={openPaymentModal} setOpen={setPaymentModal} />
+      <PaymentModal open={openPaymentModal} setOpen={setPaymentModal} userData={props.userData} currentLocation={props.currentLocation} setSupervotes_={props.setSupervotes_} reference={props.reference}/>
     </React.Fragment>
   );
 }
