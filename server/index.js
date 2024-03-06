@@ -270,6 +270,7 @@ app.put("/upvote/:id/:email", async (req, res) => {
         { $push: { upvotes: email } }
       );
     } else {
+      
       // If the email is not in the downvotes array, return an error response
       // Push the email into the upvotes array
       await restaurantCollection.updateOne(
