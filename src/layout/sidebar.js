@@ -13,8 +13,9 @@ import { SnackbarProvider } from "notistack";
 // import axios from "axios";
 
 function Sidebar(props) {
-  const { restaurants, fetchRestaurant, fetchPlacesData, placesData } = useRestaurant();
-  console.log("restaurants",restaurants)
+  const { restaurants, fetchRestaurant, fetchPlacesData, placesData } =
+    useRestaurant();
+  console.log("restaurants", restaurants);
   useEffect(() => {
     // fetchRestaurant();
     // fetchPlacesData();
@@ -62,8 +63,6 @@ function Sidebar(props) {
   //   fetchRestaurant();
   // }, []);
 
-
-
   // const onSSOUberEats = () => {
   //   fetch(
   //     "https://login.uber.com/oauth/v2/authorize?client_id=Aaytalvpv2KDaXJXZl4bN46_i33Bl4T7&response_type=code&redirect_uri=http://localhost:3000/home"
@@ -75,7 +74,7 @@ function Sidebar(props) {
   // };
 
   return (
-    <div className="sidebar" style={{marginBottom:"3rem"}}>
+    <div className="sidebar" style={{ marginBottom: "3rem" }}>
       {/* <TextField
         id="outlined-basic"
         label="Searach Restaurant"
@@ -85,11 +84,17 @@ function Sidebar(props) {
       <div className="restaurant-container">
         <Slider {...settings}>
           {restaurants?.map((data, index) => {
-            return(
-            <div key={index}>
-              <RestaurantReviewCard {...(data.voting || {})} {...(data.data || {})} mostPopular={data.mostPopular}/>
-            </div>
-          )})}
+            return (
+              <div key={index}>
+                <RestaurantReviewCard
+                  {...(data.voting || {})}
+                  {...(data.data || {})}
+                  mostPopular={data.mostPopular}
+                  supervotes={data.supervotes}
+                />
+              </div>
+            );
+          })}
         </Slider>
       </div>
       <div>
