@@ -6,28 +6,52 @@ export function RestaurantContextProvider({ children }) {
   const [user, setUser] = useState({});
 
   const [restaurants, setRestaurants] = useState([]);
+  
   const fetchRestaurant = (lat, lng) => {
     fetch(`https://joyous-cardigan-foal.cyclic.app/restaurant/all/${lat}/${lng}`)
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
-
-        let upvotes;
-        let downvotes;
-        let supervotes;
         const restaurantsData = data.map((d) => {
-          upvotes = d.votes?.filter((d) => d.votetype === "upvote").length;
-          downvotes = d.votes?.filter((d) => d.votetype === "downvote").length;
-          supervotes = d.votes?.filter(
-            (d) => d.votetype === "supervote"
-          ).length;
+          // console.log("d",d);
+          const upvotes = d.voting.upvotes.length;
+          const downvotes = d.voting.downvotes.length;
+          const supervotes = d.voting.supervotes.length;
+  
           return {
             ...d,
+            totalVotes: upvotes + downvotes + supervotes,
+            supervotes,
           };
         });
+  
+        // Find the maximum supervotes among all restaurants
+        const maxSupervotes = Math.max(...restaurantsData.map((restaurant) => restaurant.supervotes));
+        
+        if(maxSupervotes > 0 ) {
+          // Set the most popular restaurants with the highest supervotes
+          const mostPopularRestaurants = restaurantsData.filter((restaurant) => restaurant.supervotes === maxSupervotes);
+          
+          console.log("ToSort", mostPopularRestaurants);
+          // Update the restaurantsData with the mostPopular field
+          const updatedRestaurantsData = restaurantsData.map((restaurant) => ({
+            ...restaurant,
+            mostPopular: mostPopularRestaurants.some((popular) => popular.data.reference === restaurant.data.reference),
+          }));
 
-        // console.log("Resturant Data",restaurantsData);
-        setRestaurants(restaurantsData);
+
+    
+          // Set the sorted and updated array as the new state for restaurants
+          setRestaurants(updatedRestaurantsData);
+        } else {
+          const updatedRestaurantsData = restaurantsData.map((restaurant) => ({
+            ...restaurant,
+            mostPopular: false
+          }));
+    
+          // Set the sorted and updated array as the new state for restaurants
+          setRestaurants(updatedRestaurantsData);
+        }
+  
       });
   };
 

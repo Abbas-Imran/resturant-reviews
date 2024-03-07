@@ -14,6 +14,7 @@ import { SnackbarProvider } from "notistack";
 
 function Sidebar(props) {
   const { restaurants, fetchRestaurant, fetchPlacesData, placesData } = useRestaurant();
+  console.log("restaurants",restaurants)
   useEffect(() => {
     // fetchRestaurant();
     // fetchPlacesData();
@@ -83,11 +84,12 @@ function Sidebar(props) {
       <SnackbarProvider />
       <div className="restaurant-container">
         <Slider {...settings}>
-          {restaurants?.map((data, index) => (
+          {restaurants?.map((data, index) => {
+            return(
             <div key={index}>
-              <RestaurantReviewCard {...(data.voting || {})} {...(data.data || {})}/>
+              <RestaurantReviewCard {...(data.voting || {})} {...(data.data || {})} mostPopular={data.mostPopular}/>
             </div>
-          ))}
+          )})}
         </Slider>
       </div>
       <div>

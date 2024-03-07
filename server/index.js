@@ -270,7 +270,7 @@ app.put("/upvote/:id/:email", async (req, res) => {
         { $push: { upvotes: email } }
       );
     } else {
-      
+
       // If the email is not in the downvotes array, return an error response
       // Push the email into the upvotes array
       await restaurantCollection.updateOne(
@@ -354,7 +354,6 @@ app.put("/supervote/:id/:email", async (req, res) => {
       // If the restaurant with the given reference ID is not found, return an error response
       return res.status(404).json({ error: "Restaurant not found." });
     }
-
     if (
       restaurant?.supervotes?.includes(email)
     ) {

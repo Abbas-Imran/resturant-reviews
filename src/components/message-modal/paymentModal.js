@@ -24,7 +24,7 @@ export default function PaymentModal(props) {
     };
 
     const handlePayment = () => {
-      fetch(`http://localhost:4000/supervote/${props.reference}/${user.email}`, {
+      fetch(`https://joyous-cardigan-foal.cyclic.app/supervote/${props.reference}/${user.email}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

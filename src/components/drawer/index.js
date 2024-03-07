@@ -31,6 +31,9 @@ export default function ViewRestaurant({ placeId, name }) {
     right: false,
   });
 
+  const [upvotes, setUpvotes] = React.useState({});
+  const [downvotes, setDownvotes] = React.useState({});
+
   // State to store details of the restaurant fetched from Google Maps API
   const [details, setDetails] = React.useState(null);
 
@@ -83,6 +86,52 @@ export default function ViewRestaurant({ placeId, name }) {
     setState({ ...state, [anchor]: open });
   };
 
+  const handleVote = (itemName, type) => {
+    console.log(downvotes[itemName])
+    console.log(upvotes[itemName])
+    if (type === "up") {
+      if (upvotes[itemName] > 0) {
+        return;
+      }
+      if (downvotes[itemName] > 0) {
+        console.log("Up" , type, upvotes);
+        setDownvotes((prevDownVotes) => ({
+          ...prevDownVotes,
+          [itemName]: 0,
+        }));
+        setUpvotes((prevUpvotes) => ({
+          ...prevUpvotes,
+          [itemName]: (prevUpvotes[itemName] || 0) + 1,
+        }));
+      } else {
+        setUpvotes((prevUpvotes) => ({
+          ...prevUpvotes,
+          [itemName]: (prevUpvotes[itemName] || 0) + 1,
+        }));
+      }
+    } else if (type === "down") {
+      if (downvotes[itemName] > 0) {
+        return;
+      }
+      if (upvotes[itemName] > 0) {
+        console.log("Down" , type, upvotes);
+        setUpvotes((prevUpvotes) => ({
+          ...prevUpvotes,
+          [itemName]: 0,
+        }));
+        setDownvotes((prevDownvotes) => ({
+          ...prevDownvotes,
+          [itemName]: (prevDownvotes[itemName] || 0) + 1,
+        }));
+      } else {
+        setDownvotes((prevDownvotes) => ({
+          ...prevDownvotes,
+          [itemName]: (prevDownvotes[itemName] || 0) + 1,
+        }));
+      }
+    }
+  };
+
   const MenuItem = styled(Box)({
     display: "flex",
     border: "1px solid #aaa",
@@ -131,7 +180,7 @@ export default function ViewRestaurant({ placeId, name }) {
     >
       <Box sx={{ position: "absolute", right: "10px", top: "10px" }}>
         <Button onClick={toggleDrawer(anchor, false)}>
-          <img src="/Images/close-btn.jpg" width="40px" alt="close Icon"/>
+          <img src="/Images/close-btn.jpg" width="40px" alt="close Icon" />
         </Button>
       </Box>
       {details && (
@@ -236,15 +285,17 @@ export default function ViewRestaurant({ placeId, name }) {
                       >
                         <Tooltip title="Up Vote">
                           <IconButton
-                            // onClick={() => {
-                            //   onUpVoteHandler(reference);
-                            // }}
+                            onClick={() =>
+                              handleVote("Baba Ghanoush Meze", "up")
+                            }
                             aria-label="add to favorites"
                           >
                             <FavoriteIcon />
                           </IconButton>
                         </Tooltip>
-                        <span style={{ paddingRight: "10px" }}>0</span>
+                        <span style={{ paddingRight: "10px" }}>
+                          {upvotes["Baba Ghanoush Meze"] || 0}
+                        </span>
                         <span
                           style={{
                             height: "22px",
@@ -254,11 +305,17 @@ export default function ViewRestaurant({ placeId, name }) {
                           }}
                         ></span>
                         <Tooltip title="Down Vote">
-                          <IconButton>
+                          <IconButton
+                            onClick={() =>
+                              handleVote("Baba Ghanoush Meze", "down")
+                            }
+                          >
                             <HeartBrokenIcon />
                           </IconButton>
                         </Tooltip>
-                        <span style={{ paddingRight: "10px" }}>0</span>
+                        <span style={{ paddingRight: "10px" }}>
+                          {downvotes["Baba Ghanoush Meze"] || 0}
+                        </span>
                       </div>
                     </Box>
                   </Box>
@@ -306,15 +363,15 @@ export default function ViewRestaurant({ placeId, name }) {
                     >
                       <Tooltip title="Up Vote">
                         <IconButton
-                          // onClick={() => {
-                          //   onUpVoteHandler(reference);
-                          // }}
+                          onClick={() => handleVote("Half Chicken", "up")}
                           aria-label="add to favorites"
                         >
                           <FavoriteIcon />
                         </IconButton>
                       </Tooltip>
-                      <span style={{ paddingRight: "10px" }}>0</span>
+                      <span style={{ paddingRight: "10px" }}>
+                        {upvotes["Half Chicken"] || 0}
+                      </span>
                       <span
                         style={{
                           height: "22px",
@@ -325,10 +382,14 @@ export default function ViewRestaurant({ placeId, name }) {
                       ></span>
                       <Tooltip title="Down Vote">
                         <IconButton>
-                          <HeartBrokenIcon />
+                          <HeartBrokenIcon
+                            onClick={() => handleVote("Half Chicken", "down")}
+                          />
                         </IconButton>
                       </Tooltip>
-                      <span style={{ paddingRight: "10px" }}>0</span>
+                      <span style={{ paddingRight: "10px" }}>
+                        {downvotes["Half Chicken"] || 0}
+                      </span>
                     </div>
                   </Box>
                 </Box>
@@ -377,15 +438,15 @@ export default function ViewRestaurant({ placeId, name }) {
                     >
                       <Tooltip title="Up Vote">
                         <IconButton
-                          // onClick={() => {
-                          //   onUpVoteHandler(reference);
-                          // }}
+                          onClick={() => handleVote("Lamb Shish", "up")}
                           aria-label="add to favorites"
                         >
                           <FavoriteIcon />
                         </IconButton>
                       </Tooltip>
-                      <span style={{ paddingRight: "10px" }}>0</span>
+                      <span style={{ paddingRight: "10px" }}>
+                        {upvotes["Lamb Shish"] || 0}
+                      </span>
                       <span
                         style={{
                           height: "22px",
@@ -395,11 +456,15 @@ export default function ViewRestaurant({ placeId, name }) {
                         }}
                       ></span>
                       <Tooltip title="Down Vote">
-                        <IconButton>
+                        <IconButton
+                          onClick={() => handleVote("Lamb Shish", "down")}
+                        >
                           <HeartBrokenIcon />
                         </IconButton>
                       </Tooltip>
-                      <span style={{ paddingRight: "10px" }}>0</span>
+                      <span style={{ paddingRight: "10px" }}>
+                        {downvotes["Lamb Shish"] || 0}
+                      </span>
                     </div>
                   </Box>
                 </Box>
@@ -418,8 +483,11 @@ export default function ViewRestaurant({ placeId, name }) {
       {["right"].map((anchor) => (
         <React.Fragment key={anchor}>
           {/* Button to open the drawer */}
-          <Button onClick={toggleDrawer(anchor, true, placeId)} sx={{textWrap:"nowrap"}}>
-           {name}
+          <Button
+            onClick={toggleDrawer(anchor, true, placeId)}
+            sx={{ textWrap: "nowrap" }}
+          >
+            {name}
           </Button>
           {/* Drawer component */}
           <Drawer

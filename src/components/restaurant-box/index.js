@@ -48,12 +48,14 @@ export default function RestaurantReviewCard(props) {
     place_id: placeId,
     geometry,
     supervotes,
-    name
+    name,
+    mostPopular
     // currentLocation,
   } = props;
 
+
   const {user} = useUserAuth();
-  console.log("Resturant Box User", user);
+  // console.log("Resturant Box User", user);
   const [expanded, setExpanded] = React.useState(false);
   const [upvotes_, setUpvotes_] = React.useState(upvotes);
   const [supervotes_, setSupervotes_] = React.useState(supervotes);
@@ -181,7 +183,7 @@ export default function RestaurantReviewCard(props) {
         position: "relative",
         margin: "0 1rem",
         boxShadow:"rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
-        background: (supervotes_.length > 0) ? "url('/Images/goldenBG.jpeg')" : '',
+        background: (mostPopular) ? "url('/Images/goldenBG.jpeg')" : '',
         backgroundSize:'cover'
       }}
     >
