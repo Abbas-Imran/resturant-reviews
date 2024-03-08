@@ -53,7 +53,6 @@ export default function RestaurantReviewCard(props) {
     // currentLocation,
   } = props;
 
-
   const {user} = useUserAuth();
   // console.log("Resturant Box User", user);
   const [expanded, setExpanded] = React.useState(false);
@@ -63,6 +62,8 @@ export default function RestaurantReviewCard(props) {
   const [openMessageModal, setOpenMessageModal] = React.useState(false);
   const [isViewRestaurant, setIsViewRestaurant] = React.useState(false);
   const [currentLocation, setCurrentLocation] = React.useState();
+
+  console.log("supervotes",supervotes);
 
   React.useEffect(() => {
     // Check if Geolocation is supported by the browser
@@ -182,7 +183,7 @@ export default function RestaurantReviewCard(props) {
         maxWidth: 345,
         position: "relative",
         margin: "0 1rem",
-        boxShadow:"rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
+        boxShadow:(mostPopular) ? "5px 5px 14px 7px rgba(255,215,0,0.49)":"rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
         background: (mostPopular) ? "url('/Images/goldenBG.jpeg')" : '',
         backgroundSize:'cover'
       }}
@@ -295,7 +296,7 @@ export default function RestaurantReviewCard(props) {
             <LocalFireDepartmentTwoToneIcon onClick={handleOpenMessageModal} />
           </ExpandMore>
         </Tooltip>
-        <span style={{ paddingRight: "10px" }}>{supervotes_?.length}</span>
+        <span style={{ paddingRight: "10px" }}>{supervotes_}</span>
 </div>
         </div>
       </CardActions>

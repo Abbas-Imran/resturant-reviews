@@ -42,7 +42,9 @@ export default function PaymentModal(props) {
           console.log(data);
           const supervotes = data.data?.supervotes; // Ensure data.data exists
           if (supervotes !== undefined) {
-            props.setSupervotes_(supervotes);
+            console.log("supervotes.length",supervotes.length);
+            console.log("supervotes",supervotes);
+            props.setSupervotes_(supervotes.length);
             enqueueSnackbar("Supervoted the restaurant", {
               variant: "success",
             });
