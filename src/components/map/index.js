@@ -208,7 +208,11 @@ const options = {
 };
 
 const Map = (props) => {
-  const { fetchRestaurant } = useRestaurant();
+  const { fetchRestaurant, restaurants } = useRestaurant();
+
+  const MostPopular = restaurants.filter((resturant) => resturant.mostPopular === true);
+
+  console.log("Most Popular", MostPopular);
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyBbd6OxsOu0GJoN0PaGJlcfAfCnr9junkE",
@@ -217,6 +221,8 @@ const Map = (props) => {
 
   const [superVotes, setSuperVotes] = React.useState([]);
   const [selected, setSelected] = React.useState(null);
+
+  console.log("Super voted",superVotes);
 
   const [currentPosition, setCurrentPosition] = useState(null);
   console.log("currentPosition",currentPosition);
@@ -293,17 +299,17 @@ const Map = (props) => {
         onLoad={onMapLoad}
         onDragEnd={onMapDragEnd}
       >
-        {superVotes.map((marker) => {
+        {MostPopular.map((marker) => {
           return (
             <Marker
-              key={`${marker.lat}-${marker.lng}`}
-              position={{ lat: marker.lat, lng: marker.lng }}
+              key={`${marker.data.geometry.location.lat}-${marker.data.geometry.location.lng}`}
+              position={{ lat: marker.data.geometry.location.lng, lng: marker.data.geometry.location.lng }}
               onClick={() => {
                 setSelected(marker);
               }}
-              // icon={{
-              //   url: "/supervotes.svg"
-              // }}
+              icon={{
+                url: "/supervotes.svg"
+              }}
             />
           );
         })}

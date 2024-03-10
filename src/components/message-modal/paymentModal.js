@@ -11,10 +11,14 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useUserAuth } from "../../context/UserAuthContext";
 import { enqueueSnackbar } from "notistack";
+import { useRestaurant } from "../../context/RestuaurantContext";
 
 export default function PaymentModal(props) {
   const { open, setOpen, currentLocation,userData } = props;
   const {user} = useUserAuth();
+
+  const { restaurants, fetchRestaurant, fetchPlacesData, placesData } =
+    useRestaurant();
 
   const stripePromise = loadStripe(
       "pk_test_51O2KsPEjS12OGlkDbSBhfjyRl4JcwekIaAoQ8MSEPgho0CIyPLFg3d00P3ahBo6iH6DjEhbOxCawbRCvYsFL5ch600qU1oKbKW"
@@ -45,6 +49,7 @@ export default function PaymentModal(props) {
             console.log("supervotes.length",supervotes.length);
             console.log("supervotes",supervotes);
             props.setSupervotes_(supervotes.length);
+            // fetchRestaurant();
             enqueueSnackbar("Supervoted the restaurant", {
               variant: "success",
             });

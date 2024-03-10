@@ -54,7 +54,6 @@ export default function RestaurantReviewCard(props) {
   } = props;
 
   const {user} = useUserAuth();
-  // console.log("Resturant Box User", user);
   const [expanded, setExpanded] = React.useState(false);
   const [upvotes_, setUpvotes_] = React.useState(upvotes);
   const [supervotes_, setSupervotes_] = React.useState(supervotes);
@@ -62,8 +61,9 @@ export default function RestaurantReviewCard(props) {
   const [openMessageModal, setOpenMessageModal] = React.useState(false);
   const [isViewRestaurant, setIsViewRestaurant] = React.useState(false);
   const [currentLocation, setCurrentLocation] = React.useState();
-
-  console.log("supervotes",supervotes);
+  
+  console.log(name, supervotes_);
+  // console.log("supervotes",supervotes);
 
   React.useEffect(() => {
     // Check if Geolocation is supported by the browser
