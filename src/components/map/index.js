@@ -307,8 +307,8 @@ const Map = (props) => {
               onClick={() => {
                 setSelected(marker);
               }}
-              icon={{
-                url: "/supervotes.svg"
+              options={{
+                icon: "/Images/mostPopular.png"
               }}
             />
           );

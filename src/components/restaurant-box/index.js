@@ -15,7 +15,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
-import { Tooltip } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import LocalFireDepartmentTwoToneIcon from "@mui/icons-material/LocalFireDepartmentTwoTone";
 import MessageModal from "../message-modal";
 import ViewRestaurant from "../drawer";
@@ -62,8 +62,7 @@ export default function RestaurantReviewCard(props) {
   const [isViewRestaurant, setIsViewRestaurant] = React.useState(false);
   const [currentLocation, setCurrentLocation] = React.useState();
   
-  console.log(name, supervotes_);
-  // console.log("supervotes",supervotes);
+  console.log("supervotes",name,supervotes,supervotes_);
 
   React.useEffect(() => {
     // Check if Geolocation is supported by the browser
@@ -178,6 +177,8 @@ export default function RestaurantReviewCard(props) {
 
 
   return (
+    <Box sx={{position:"relative"}}>
+      {mostPopular && <img src="/Images/mostPopular.png" width={50} height={50} alt="Most Popular Icon" style={{position:"absolute", top:"0px", zIndex:"4",rotate:"-30deg"}}/>}
     <Card
       sx={{
         maxWidth: 345,
@@ -332,5 +333,6 @@ export default function RestaurantReviewCard(props) {
         </CardContent>
       </Collapse>
     </Card>
+    </Box>
   );
 }

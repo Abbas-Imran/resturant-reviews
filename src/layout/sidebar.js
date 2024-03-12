@@ -72,7 +72,7 @@ function Sidebar(props) {
   //       console.log(data);
   //     });
   // };
-
+// console.log(data.data.name,data.voting, data.supervotes);
   return (
     <div className="sidebar" style={{ marginBottom: "3rem" }}>
       {/* <TextField
@@ -84,6 +84,7 @@ function Sidebar(props) {
       <div className="restaurant-container">
         <Slider {...settings}>
           {restaurants?.map((data, index) => {
+            console.log(data.data.name,data.voting, data.supervotes, data);
             return (
               <div key={index}>
                 <RestaurantReviewCard
